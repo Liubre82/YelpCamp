@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/index.css">
+
+<div id="cluster-map" class="mb-3"></div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>All Campgrounds</h1>
+    <a href="/campGrounds/new" class="btn btn-outline-primary mb-3">Add Campground</a>
+</div>
+    
+    <ul>
+        <% for(let camp of campGrounds) { %>
+            <div class="card mb-3"  >
+                <div class="row">
+                    <div class="col-md-4">
+                        <div id="campgroundCarousel" class="carousel slide" >
+                            <div class="carousel-inner">
+                                <% camp.images.forEach((image, index) => { %>
+                                    <div class="carousel-item <%=index ===0 ? 'active' : ''%>">
+                                        <img src="<%=image.url%>" class="d-block w-100" alt="">
+                                      </div>
+                                <% }) %>
+                            </div>
+                            <% if (camp.images.length > 1) { %>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                  </button>
+                                  <button class="carousel-control-next" type="button" data-bs-target="#campgroundCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                  </button>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-evenly">
+                                <h5 class="card-title"> <%= camp.title %> </h5>
+                                <p class="card-text">
+                                    <small class="text-muted"> <%= camp.location %> </small>
+                                </p>
+                            </div>
+                            <p class="card-text">
+                                <%=camp.description%>
+                            </p>
+                            <a class="btn btn-primary" href="/campGrounds/<%=camp._id%>">View <%= camp.title %></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+    </ul>
+
+    <!--
+        mapbox geojson data stored inside a features array property, so if we want to display our own data, we have to wrap our campGrounds array with features: [] and mapbox will look for the geometry property in each campground obj in our campGrounds array and plot it on the map.
+        features: [ 
+            { "type": "Feature", "properties": { "id": "ak16994521", "mag": 2.3, "time": 1507425650893, "felt": null, "tsunami": 0 }, "geometry": { "type": "Point", "coordinates": [ -151.5129, 63.1016, 0.0 ] } }, 
+            { "type": "Feature", "properties": { "id": "ak16994519", "mag": 1.7, "time": 1507425289659, "felt": null, "tsunami": 0 }, "geometry": { "type": "Point", "coordinates": [ -150.4048, 63.1224, 105.5 ] } },
+        ]
+    -->
+        
+    <script>
+        const mapboxToken = '<%- process.env.MAPBOX_TOKEN %>';
+        const campgrounds = {features: <%- JSON.stringify(campGrounds) %>};
+    </script>
+    
+<script src="/javascript/clusterMap.js"></script>

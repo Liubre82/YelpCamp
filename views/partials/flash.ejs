@@ -1,0 +1,17 @@
+<!-- success is an array, and it stores the messages that are created when                       req.flash('success', msg) is used, the msg is stored in success
+so below, if success.length is not 1+ then there are no success msgs to be displayed. and thus the alert will not display unless req.flash('success', msg) is called but there should only 1 message per array multiple would be weird.-->
+<% if(success && success.length) { %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <!-- res.local.success can be accessed  -->
+        <%= success %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
+
+<% if(error && error.length) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <!-- res.local.success can be accessed  -->
+    <%= error %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<% } %>
