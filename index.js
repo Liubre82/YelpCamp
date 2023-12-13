@@ -36,12 +36,7 @@ app.use(express.static(path.join(__dirname, 'public'))) //all static files do no
 
 
 //newest version does not require the following properties to fix errors.
-mongoose.connect(mongodbURL, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false
-})
+mongoose.connect(mongodbURL)
 
 //mongoose.connect(mongodbURL) //connecting to our cloud db service in mongodb
 const db = mongoose.connection

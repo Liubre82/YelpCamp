@@ -1,18 +1,17 @@
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
 const mongoose = require('mongoose')
 const cities = require('./cities')
 const {places, descriptors} = require('./seedHelpers')
 const campGround = require('../Schemas/campGround') //Model
+const mongodbURL = process.env.MONGODB_URL
 
-mongoose.connect('mongodb://127.0.0.1:27017/yelp-camp'), {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useUnifiedTopology: true
-}
-
-const db = mongoose.connection
-db.on("error", console.error.bind(console, "connection error:"))
-db.once("open", () => {
-    console.log("Database connected")
+mongoose.connect(mongodbURL).then(() => {
+    console.log('Connected to MongoDB')
+})
+.catch(err => {
+    console.log(err)
 })
 
 //if brackets are used, js will no longer implicitly return the one liner. you must explicitly return if the function is more than 1 line and has brackets.
