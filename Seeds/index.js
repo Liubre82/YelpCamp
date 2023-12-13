@@ -31,7 +31,7 @@ const seedDb = async () => {
             title: `${sample(descriptors)} ${sample(places)}`,
             description: "2 Gain Levels and BASS Boost: The E10K-TC comes with high/low gain adjustment as well as a bass boost. High gain is for higher impedance headphones that may need the extra volume, while the bass boost satisfies different listener's preferences when listening to various types of music",
             price: randomPrice,
-            author: '6530677e3410489b5368019d',
+            author: '653b5508b699c620885c3f13',
             geometry: {
                 type: 'Point',
                 coordinates: [

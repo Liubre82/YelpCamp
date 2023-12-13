@@ -1,5 +1,6 @@
 const catchAsync = require('../Utils/CatchAsync')
 const campGround = require('../Schemas/campGround')
+const Reviews = require('../Schemas/review')
 const ObjectId = require('mongoose').Types.ObjectId;
 const {cloudinary} = require('../cloudinary')
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding")
@@ -120,6 +121,9 @@ module.exports.editCampground = catchAsync(async (req, res) => {
 module.exports.deleteCampground = catchAsync(async (req, res) => {
     const { id } = req.params
     const camp = await campGround.findByIdAndDelete(id)
+    for(let i = 0; i < camp.reviews.length; i++) {
+        const review = await Reviews.findByIdAndDelete(camp.reviews[i])
+    }
     req.flash('success', 'Successfully deleted review!')
     res.redirect('/campGrounds')
 })
