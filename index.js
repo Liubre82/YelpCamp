@@ -1,8 +1,8 @@
 /* Because of code below, we're always running in our development environment by defaults. So this code runs, which is going to take a dotenv file. It's looking for that one file with that name in the route directory. So don't try and name it something else. And then it's going to just parse it and store all of the key value pairs in process.env
 Very, very, very common practice. */
-
-require('dotenv').config()
-
+if(process.env.NODE_ENV !== "production") {
+    require('dotenv').config()
+}
 
 const express = require('express')
 const app = express()
@@ -15,6 +15,7 @@ const path = require('path')
 const passport = require('passport')
 const LocalStrategy = require('passport-local');
 const helmet = require("helmet")
+const mongoSanitize = require('express-mongo-sanitize');
 const mongodbURL = process.env.MONGODB_URL
 const secret = process.env.SESSION_SECRET || 'thisshouldbeabettersecret!';
 const MongoDBStore = require("connect-mongo")(session)
@@ -36,18 +37,20 @@ app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public'))) //all static files do not need to specify Public, it will now implicitly look in the public dir.
 
 
-mongoose.connect(process.env.MONGODB_URL).then(() => {
+mongoose.connect(mongodbURL).then(() => {
     console.log('Connected to MongoDB')
 })
 .catch(err => {
     console.log(err)
 })
 const store = new MongoDBStore({
-    url: process.env.MONGODB_URL,
+    url: mongodbURL,
     secret,
     touchAfter: 24 * 60 * 60
 });
-
+app.use(mongoSanitize({
+    replaceWith: '_'
+}))
 //Setting up A Session
 const sessionConfig = {
     store,
