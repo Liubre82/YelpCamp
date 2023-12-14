@@ -36,14 +36,14 @@ app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public'))) //all static files do not need to specify Public, it will now implicitly look in the public dir.
 
 
-mongoose.connect(mongodbURL).then(() => {
+mongoose.connect(process.env.MONGODB_URL).then(() => {
     console.log('Connected to MongoDB')
 })
 .catch(err => {
     console.log(err)
 })
 const store = new MongoDBStore({
-    url: mongodbURL,
+    url: process.env.MONGODB_URL,
     secret,
     touchAfter: 24 * 60 * 60
 });
