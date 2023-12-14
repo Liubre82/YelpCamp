@@ -16,6 +16,7 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local');
 const helmet = require("helmet")
 const mongodbURL = process.env.MONGODB_URL
+const secret = process.env.SESSION_SECRET || 'thisshouldbeabettersecret!';
 const MongoDBStore = require("connect-mongo")(session)
 
 const User = require('./Schemas/user.js')
@@ -35,24 +36,30 @@ app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public'))) //all static files do not need to specify Public, it will now implicitly look in the public dir.
 
 
-//newest version does not require the following properties to fix errors.
-mongoose.connect(mongodbURL)
+mongoose.connect(mongodbURL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
 
-//mongoose.connect(mongodbURL) //connecting to our cloud db service in mongodb
-const db = mongoose.connection
-db.on("error", console.error.bind(console, "connection error:"))
+const db = mongoose.connection;
+db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Database connected")
-})
+    console.log("Database connected");
+});
 
-// const store = new MongoDBStore({
-//     url: 
-// })
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
 
 //Setting up A Session
 const sessionConfig = {
+    store,
     name:'campgroundSession',
-    secret: 'thisshouldbeabettersecret',
+    secret,
     resave: false, // removes deprecated warning
     saveUninitialized: true, // removes deprecated warning
     cookie: { //set options for the coookie that gets sent to us about the session.
