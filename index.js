@@ -36,7 +36,12 @@ app.use(methodOverride('_method'))
 app.use(express.static(path.join(__dirname, 'public'))) //all static files do not need to specify Public, it will now implicitly look in the public dir.
 
 
-mongoose.connect(mongodbURL);
+mongoose.connect(mongodbURL, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
 
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
