@@ -46,11 +46,11 @@ mongoose.connect(mongodbURL, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", () => {
-    console.log("Database connected");
+    console.log("MongoDB connected");
 });
 
 const store = new MongoDBStore({
-    url: dbUrl,
+    url: mongodbURL,
     secret,
     touchAfter: 24 * 60 * 60
 });
