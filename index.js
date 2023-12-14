@@ -1,8 +1,8 @@
 /* Because of code below, we're always running in our development environment by defaults. So this code runs, which is going to take a dotenv file. It's looking for that one file with that name in the route directory. So don't try and name it something else. And then it's going to just parse it and store all of the key value pairs in process.env
 Very, very, very common practice. */
-if(process.env.NODE_ENV !== "production") {
-    require('dotenv').config()
-}
+
+require('dotenv').config()
+
 
 const express = require('express')
 const app = express()
