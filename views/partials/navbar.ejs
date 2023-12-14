@@ -19,13 +19,13 @@
                     <a class="nav-link" href="/campGrounds/new">New CampGrounds</a>
                 </li>
             </ul>
-            <ul class="navbar-nav ms-auto">
+            <ul class="navbar-nav ms-auto d-flex align-items-center">
                 <!-- if user is not logged in, the currentUser/req.user obj would be undefined -->
                 <% if (!currentUser) { %>
                     <li><a class="nav-link" href="/register">Register</a></li>
                     <li><a class="nav-link" href="/login">Login</a></li>
                 <% } else { %>
-                    <li><%= currentUser.username %></li>
+                    <li class="font-weight-bold text-info mt-1 h5"><%= currentUser.username %></li>
                     <li><a class="nav-link" href="/logout">Logout</a></li>
                 <% } %>
                 
